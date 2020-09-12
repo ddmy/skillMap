@@ -54,7 +54,7 @@ let const 声明变量，箭头函数，模板字符串，解构赋值，import 
 ### 闭包
 > 闭包是在函数外部能够读取到函数内部的变量，所以函数函数定义不会被GC收回，如果过度使用闭包，可能会造成内存泄漏问题
 ---
-### 什么事jsonp
+### 什么是jsonp
 > jsonp的目的是为了目标也回调当前页面的方法并传入参数，是为了解决一些情况下的跨域问题，比如页面引入一个 php脚本， php echo 一个 fn(1,2),就会调用当前页面的fn方法，不受同源策略限制。
 ---
 ### DomContentLoaded和onload 的区别
@@ -67,7 +67,13 @@ let const 声明变量，箭头函数，模板字符串，解构赋值，import 
 > ES6新增API，主要是提供了一系列操作对象的API
 --- 
 ### 什么是Proxy
+> 对象代理，在对象外层建立一层拦截，访问处理对象的属性时，需要经过Proxy处理，可以用来定制拦截行为。vue3重写最大的改动就是将 vue2的`Object.definePrototype`底层实现改写为通过`Proxy reflect`实现
 ### 理解 async/await以及对Generator的优势
+> async await 是用来解决异步编程的， async是 Generator函数的语法糖，async 函数返回一个Promise,使用then方法添加回调优势是:
+- 内置执行器，async自带执行器，跟普通函数调用一样，而generator函数需要通过 yield 和 next 执行
+- 更好的语义化， async 和 await 相对于 * 和 yield 更具语义化
+- 更广的适用性，yield命令后只能是Thunk函数或者Promis对象，async函数中await 可以是promise，也可以是原始类型的值
+- 返回值是promis，可以直接用then低啊用回调，generator返回的是Iterator对象。
 ## 二、安全篇
 ## 三、HTTP
 ## 四、框架篇
