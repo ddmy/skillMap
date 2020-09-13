@@ -77,6 +77,24 @@ let const 声明变量，箭头函数，模板字符串，解构赋值，import 
 ## 二、安全篇
 ## 三、HTTP
 ## 四、框架篇
+### vue3.0 的改动
+- 异步组件
+  - 异步组件需要使用 `definAsyncComponent`方法来注册
+  - component 选项重命名为loader
+  - 加载函数本身不接收`resolve`和`reject`传递参数，方法始终返回Promise
+- 自定义指令
+  - 注册自定义指令的配置参数调整，vue3 的处理方式为在不同生命周期的回调函数处理
+- data 更新
+  - vue3 data 定义只能是function
+- event bus
+  - 删除 应用实例的`$on, $off, $once`, eventHub 参数传递方案需要重写， 官方推荐第三方插件实现(mitt)
+- 过滤器
+  - 删除过滤器（考虑学习成本和实现成本），推荐使用计算属性或者方法调用来实现
+- template组件结构
+  - 组件支持多个根结点，可以通过`inheritAttrs: false`来禁用组件属性继承
+- 函数组件
+  - vue3 移除 `functional`
+  - `listeners` 作为 一部分传递到 `$attrs`，可以删除
 ## 五、服务端
 ## 六、工程化`
 ## 七、工具篇
