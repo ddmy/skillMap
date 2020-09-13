@@ -1,4 +1,4 @@
-# JavaScript
+# 前端基础知识点总结
 ## 一、概念篇
 ### ES6和ES5的区别
 > es6和es5 属于两个不同的版本， es6是对es5的一次改进，新增了一些特性，比如
@@ -111,6 +111,37 @@ box-sizing的使用
 ```
 > box-sizing的默认属性是content-box
  ---
+ ### BFC
+ > BFC （块级格式化上下文），是一个独立的渲染区域，让处于 BFC 内部的元素与外部的元素相互隔离，使内外元素的定位不会相互影响
+ 触发条件:
+- 根元素
+- position: absolute/fixed
+- display: inline-block / table
+ -float 元素
+- ovevflow !== visible
+规则:
+- 属于同一个 BFC 的两个相邻 Box 垂直排列
+- 属于同一个 BFC 的两个相邻 Box 的 margin 会发生重叠
+- BFC 的区域不会与 float 的元素区域重叠
+- 计算 BFC 的高度时，浮动子元素也参与计算
+---
+### 说一下<label>标签的用法
+> label标签主要是方便鼠标点击使用，扩大可点击的范围，增强用户操作体验
+---
+### 页面渲染html的过程？
+> 浏览器渲染页面的一般过程：
+
+1.浏览器解析html源码，然后创建一个 DOM树。并行请求 css/image/js在DOM树中，每一个HTML标签都有一个对应的节点，并且每一个文本也都会有一个对应的文本节点。DOM树的根节点就是 documentElement，对应的是html标签。
+
+2.浏览器解析CSS代码，计算出最终的样式数据。构建CSSOM树。对CSS代码中非法的语法它会直接忽略掉。解析CSS的时候会按照如下顺序来定义优先级：浏览器默认设置 < 用户设置 < 外链样式 < 内联样式 < html中的style。
+
+3.DOM Tree + CSSOM --> 渲染树（rendering tree）。渲染树和DOM树有点像，但是是有区别的。
+
+DOM树完全和html标签一一对应，但是渲染树会忽略掉不需要渲染的元素，比如head、display:none的元素等。而且一大段文本中的每一个行在渲染树中都是独立的一个节点。渲染树中的每一个节点都存储有对应的css属性。
+
+4.一旦渲染树创建好了，浏览器就可以根据渲染树直接把页面绘制到屏幕上。
+
+以上四个步骤并不是一次性顺序完成的。如果DOM或者CSSOM被修改，以上过程会被重复执行。实际上，CSS和JavaScript往往会多次修改DOM或者CSSOM。
 ## 九、coding，算法，源码实现
 ### 两个变量值交换
 ```
@@ -140,4 +171,24 @@ display:table+display:table-cell + vertical-align: middle;
 ```
 height: 1px;
 transform: scale(0.5);
+```
+---
+### css画三角形
+```
+.a{
+  width: 0;
+  height: 0;
+  border-width: 100px;
+  border-style: solid;
+  border-color: transparent #0099CC transparent transparent;
+  transform: rotate(90deg); /*顺时针旋转90°*/
+}
+<div class="a"></div>
+```
+### 清除浮动的几种方式，及原理？
+```
+::after
+底部添加空div 设置 clear: both
+创建父级 BFC(overflow:hidden)
+父级设置高度
 ```
