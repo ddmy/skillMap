@@ -217,7 +217,12 @@ let wonmanObj=new Woman('xiaoxiami');
 wonmanObj.eat();
 ```
 > ES5继承和ES6继承的区别: es5继承首先是在子类中创建自己的this指向，最后将方法添加到this中`Child.prototype=new Parent() || Parent.apply(this) || Parent.call(this)` es6继承是使用关键字先创建父类的实例对象this，最后在子类class中修改this
-### 帧动画
+---
+### requestAnimationFrame
+> 相比于`setTimeout setInterval`的优势
+> 以帧为单位改变元素轨迹样式的动画
+- requestAnimationFrame会把每一帧中所有的元素操作集中起来，在一次重绘或者回流中中执行完毕，重绘回流的时间一般紧紧跟随浏览器的刷新频率，一般是每秒60帧
+- 在隐藏不可见的元素中，requestAnimation不会进行重绘和回流，这意味着更少的cpu，gpu，内存的使用
 ## 二、安全篇
 ## 三、HTTP
 ### 页面缓存原理
@@ -250,6 +255,7 @@ wonmanObj.eat();
 ---
 ### computed的特点？
 ### vue 如何检测数组变化的
+> vue重写了数组的 `push、pop、shift、unshift、splice、sort、reverse`的方法，在数组内容发生改变时，除了调用数组原始方法外，额外调用了`ob.dep.notify()`方法通知订阅者。
 ### 为何vue采用异步渲染
 ### watch 中 deep:true 如何实现
 ### vue事件绑定原理
@@ -355,7 +361,7 @@ box-sizing的使用
 5. 以上四个步骤并不是一次性顺序完成的。如果DOM或者CSSOM被修改，以上过程会被重复执行。实际上，CSS和JavaScript往往会多次修改DOM或者CSSOM。
 ---
 ### content-visibility
-
+### 图片格式
 ## 九、coding，算法，源码实现
 ### 两个变量值交换
 ```
