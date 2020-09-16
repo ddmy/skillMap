@@ -74,9 +74,22 @@ let const 声明变量，箭头函数，模板字符串，解构赋值，import 
 - 更好的语义化， async 和 await 相对于 * 和 yield 更具语义化
 - 更广的适用性，yield命令后只能是Thunk函数或者Promis对象，async函数中await 可以是promise，也可以是原始类型的值
 - 返回值是promis，可以直接用then低啊用回调，generator返回的是Iterator对象。
+---
+### target、currentTarget的区别？
+> currentTarget当前所绑定事件的元素, target当前被点击的元素
+###
+### 继承
 ## 二、安全篇
 ## 三、HTTP
+### 页面缓存原理
+### 跨域解决方案
+### 输入URL到页面展现的过程
+### get和post的区别
 ## 四、框架篇
+### vue 响应式原理
+### diff算法
+### hooks以及各个框架的区别
+---
 ### vue3.0 的改动
 - 异步组件
   - 异步组件需要使用 `definAsyncComponent`方法来注册
@@ -95,9 +108,56 @@ let const 声明变量，箭头函数，模板字符串，解构赋值，import 
 - 函数组件
   - vue3 移除 `functional`
   - `listeners` 作为 一部分传递到 `$attrs`，可以删除
+---
+### computed的特点？
+### vue 如何检测数组变化的
+### 为何vue采用异步渲染
+### watch 中 deep:true 如何实现
+### vue事件绑定原理
+### v-for和v-if 为什么不能一起使用
+### v-model 实现原理，如何自定义v-model
+### 组件中的data为什么是一个函数
+### vue 组件通信
+### 什么事作用域插槽
+### diff算法的时间复杂度
+### vue模板编译原理
+### vue常见的性能优化
+### vue 相同的逻辑如何抽离
+### 为什么要使用异步组件
+### 对keep-alive的了解
+### 实现hash路由和history路由
+### vue-router中有哪些导航守卫
+### action和mutaion的区别
+### vuex工作原理
+### vue ssr生命周期
+### 虚拟dom vue和react的区别
 ## 五、服务端
-## 六、工程化`
+### 反向代理，负载均衡
+### 洋葱模型
+### 中间件
+### 状态码
+### nodejs 中 require是如何工作的？
+## 六、工程化
+### 了解过的打包工具
+### webpack 构建性能优化
+### 热更新原理
+### vite
+### npm优化
+### soourceMap的了解
 ## 七、工具篇
+### git
+### nginx
+### redis
+### docker
+### 浏览器（渲染原理）
+### typescript
+### 单元测试jest
+### 常用的sell命令
+- curl
+- ping
+- telnet
+- tail
+### ab压测
 ## 八、HTML和CSS
 ### 1rem、1em、1vh、1px各自代表的含义？
 > rem
@@ -148,18 +208,14 @@ box-sizing的使用
 ---
 ### 页面渲染html的过程？
 > 浏览器渲染页面的一般过程：
+1. 浏览器解析html源码，然后创建一个 DOM树。并行请求 css/image/js在DOM树中，每一个HTML标签都有一个对应的节点，并且每一个文本也都会有一个对应的文本节点。DOM树的根节点就是 documentElement，对应的是html标签。
+2. 浏览器解析CSS代码，计算出最终的样式数据。构建CSSOM树。对CSS代码中非法的语法它会直接忽略掉。解析CSS的时候会按照如下顺序来定义优先级：浏览器默认设置 < 用户设置 < 外链样式 < 内联样式 < html中的style。
+3. DOM Tree + CSSOM --> 渲染树（rendering tree）。渲染树和DOM树有点像，但是是有区别的。DOM树完全和html标签一一对应，但是渲染树会忽略掉不需要渲染的元素，比如head、display:none的元素等。而且一大段文本中的每一个行在渲染树中都是独立的一个节点。渲染树中的每一个节点都存储有对应的css属性。
+4. 一旦渲染树创建好了，浏览器就可以根据渲染树直接把页面绘制到屏幕上。
+5. 以上四个步骤并不是一次性顺序完成的。如果DOM或者CSSOM被修改，以上过程会被重复执行。实际上，CSS和JavaScript往往会多次修改DOM或者CSSOM。
+---
+### content-visibility
 
-1.浏览器解析html源码，然后创建一个 DOM树。并行请求 css/image/js在DOM树中，每一个HTML标签都有一个对应的节点，并且每一个文本也都会有一个对应的文本节点。DOM树的根节点就是 documentElement，对应的是html标签。
-
-2.浏览器解析CSS代码，计算出最终的样式数据。构建CSSOM树。对CSS代码中非法的语法它会直接忽略掉。解析CSS的时候会按照如下顺序来定义优先级：浏览器默认设置 < 用户设置 < 外链样式 < 内联样式 < html中的style。
-
-3.DOM Tree + CSSOM --> 渲染树（rendering tree）。渲染树和DOM树有点像，但是是有区别的。
-
-DOM树完全和html标签一一对应，但是渲染树会忽略掉不需要渲染的元素，比如head、display:none的元素等。而且一大段文本中的每一个行在渲染树中都是独立的一个节点。渲染树中的每一个节点都存储有对应的css属性。
-
-4.一旦渲染树创建好了，浏览器就可以根据渲染树直接把页面绘制到屏幕上。
-
-以上四个步骤并不是一次性顺序完成的。如果DOM或者CSSOM被修改，以上过程会被重复执行。实际上，CSS和JavaScript往往会多次修改DOM或者CSSOM。
 ## 九、coding，算法，源码实现
 ### 两个变量值交换
 ```
@@ -209,4 +265,47 @@ transform: scale(0.5);
 底部添加空div 设置 clear: both
 创建父级 BFC(overflow:hidden)
 父级设置高度
+```
+---
+### 遍历所有子节点
+```
+深度遍历
+const DFS = {
+    nodes: [],
+    do (root) {
+        for (let i = 0;i < root.childNodes.length;i++) {
+            var node = root.childNodes[i];
+            // 过滤 text 节点、script 节点
+            if ((node.nodeType != 3) && (node.nodeName != 'SCRIPT')) {
+                this.nodes.push(node);
+                this.do(node);
+            }
+        }
+        return this.nodes;
+    }
+}
+console.log(DFS.do(document.body));
+
+广度遍历
+const BFS = {
+    nodes: [],
+    do (roots) {
+        var children = [];
+        for (let i = 0;i < roots.length;i++) {
+            var root = roots[i];
+            // 过滤 text 节点、script 节点
+            if ((root.nodeType != 3) && (root.nodeName != 'SCRIPT')) {
+                if (root.childNodes.length) children.push(...root.childNodes);
+                this.nodes.push(root);
+            }
+        }
+        if (children.length) {
+            var tmp = this.do(children);
+        } else {
+            return this.nodes;
+        }
+        return tmp;
+    }
+}
+console.log(BFS.do(document.body.childNodes));
 ```
