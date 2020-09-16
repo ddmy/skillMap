@@ -77,8 +77,147 @@ let const 声明变量，箭头函数，模板字符串，解构赋值，import 
 ---
 ### target、currentTarget的区别？
 > currentTarget当前所绑定事件的元素, target当前被点击的元素
-###
+---
 ### 继承
+> 继承首先需要一个父类
+```
+function People(name){
+  //属性
+  this.name  = name || Annie
+  //实例方法
+  this.sleep=function(){
+    console.log(this.name + '正在睡觉')
+  }
+}
+//原型方法
+People.prototype.eat = function(food){
+  console.log(this.name + '正在吃：' + food);
+}
+```
+1. 原型链继承, 父类的实例作为子类的原型
+```
+function Woman(){ 
+}
+Woman.prototype= new People();
+Woman.prototype.name = 'haixia';
+let womanObj = new Woman();
+```
+- 优点：简单易于实现，父类的新增的实例与属性子类都能访问
+- 缺点：
+  - 可以在子类中增加实例属性，如果要新增加原型属性和方法需要在new 父类构造函数的后面
+  - 无法实现多继承
+  - 无法实现多继承，创建子类时，不能向父类构造函数传参数
+2. 借用构造函数继承（伪造对象、经典继承）
+> 复制父类的实例属性给子类
+```
+function Woman(name){
+ //继承了People
+  People.call(this); //People.call(this，'wangxiaoxia'); 
+  this.name = name || 'renbo'
+}
+let womanObj = new Woman();
+```
+- 优点：
+  - 解决了子类构造函数向父类构造函数中传递参数
+  - 可是实现多继承
+- 缺点：
+  - 方法都在构造函数中定义，无法复用
+  - 不能继承原型属性/方法，只能继承父类的实例属性和方法
+3. 实例继承（原型式继承）
+```
+function Wonman(name){
+  let instance = new People();
+  instance.name = name || 'wangxiaoxia';
+  return instance;
+}
+let wonmanObj = new Wonman();
+```
+- 优点：
+  - 不限制调用方式
+  - 简单，易实现
+- 缺点：
+  - 不能多次继承
+4. 组合式继承
+> 调用父类构造函数，继承父类的属性，通过将父类实例作为子类原型，实现函数复用
+```
+function People(name,age){
+  this.name = name || 'wangxiao'
+  this.age = age || 27
+}
+People.prototype.eat = function(){
+  return this.name + this.age + 'eat sleep'
+}
+
+function Woman(name,age){
+  People.call(this,name,age)
+}
+Woman.prototype = new People();
+Woman.prototype.constructor = Woman;
+let wonmanObj = new Woman(ren,27);
+wonmanObj.eat(); 
+```
+- 优点：
+  - 函数可以复用
+  - 不存在引用属性的问题
+  - 可以继承属性和方法，并且可以继承原型的属性和方法
+- 缺点：
+  - 由于调用了两次父类，所以产生了两份实例
+5. 寄生组合继承
+> 通过寄生的方式来修复组合式继承的不足，完美的实现继承
+```
+//父类
+function People(name,age){
+  this.name = name || 'wangxiao'
+  this.age = age || 27
+}
+//父类方法
+People.prototype.eat = function(){
+  return this.name + this.age + 'eat sleep'
+}
+//子类
+function Woman(name,age){
+  //继承父类属性
+  People.call(this,name,age)
+}
+//继承父类方法
+(function(){
+  // 创建空类
+  let Super = function(){};
+  Super.prototype = People.prototype;
+  //父类的实例作为子类的原型
+  Woman.prototype = new Super();
+})();
+//修复构造函数指向问题
+Woman.prototype.constructor = Woman;
+let womanObj = new Woman();
+```
+6. ES6继承
+```
+class People{
+  constructor(name='wang',age='27'){
+    this.name = name;
+    this.age = age;
+  }
+  eat(){
+    console.log(`${this.name} ${this.age} eat food`)
+  }
+}
+//继承父类
+class Woman extends People{ 
+   constructor(name = 'ren',age = '27'){ 
+     //继承父类属性
+     super(name, age); 
+   } 
+    eat(){ 
+     //继承父类方法
+      super.eat() 
+    } 
+} 
+let wonmanObj=new Woman('xiaoxiami'); 
+wonmanObj.eat();
+```
+> ES5继承和ES6继承的区别: es5继承首先是在子类中创建自己的this指向，最后将方法添加到this中`Child.prototype=new Parent() || Parent.apply(this) || Parent.call(this)` es6继承是使用关键字先创建父类的实例对象this，最后在子类class中修改this
+### 帧动画
 ## 二、安全篇
 ## 三、HTTP
 ### 页面缓存原理
@@ -131,6 +270,7 @@ let const 声明变量，箭头函数，模板字符串，解构赋值，import 
 ### vuex工作原理
 ### vue ssr生命周期
 ### 虚拟dom vue和react的区别
+### 小程序
 ## 五、服务端
 ### 反向代理，负载均衡
 ### 洋葱模型
