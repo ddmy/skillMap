@@ -238,8 +238,21 @@ wonmanObj.eat();
 ### get和post的区别
 ## 四、框架篇
 ### vue 响应式原理
+> vue实例化的时候将`data`方法返回的数据都挂载上`setter`方法，`setter`方法将页面上的属性进行绑定，在页面`DomContented`事件触发后，vue实例调用`mounted`方法，开始获取接口等异步数据，赋值时，触发提前设置好的`setter`方法，引起页面联动，达到响应式的效果。
+---
 ### diff算法
+> 广度优先算法，时间复杂度O(n),比较两颗DOM树差异，是算法最核心的部分，所谓的 Virtual Dom 的diff算法，两棵树的完全的diff算法是一个时间复杂度为O(n^3)的问题，但在前端领域，很少会出现跨越层级的移动DOM元素,所以vue 中只会对同一层级进行对比,这样算法的复杂度就会达到O(n)
+---
+### 编译原理
+- 词法分析（把字符串模板解析成一个个令牌token）
+- 语法分析 （生成抽象语法树 AST）
+- 解析器 (根据AST生成渲染函数)
+---
+### 什么是静态标记
+> vue template 经过parse过程后生成AST，通过 `isStaic`方法判断 AST是否是静态并打上标记，如果递归父节点素有子节点都是静态节点，那么就会给当前父节点打上静态标记。 和vue3相比，vue3打的静态标记颗粒度更小，可以精确到任意节点，这也是vue3性能高于vue2的原因之一。
+---
 ### hooks以及各个框架的区别
+> 生命周期函数
 ---
 ### vue3.0 的改动
 - 异步组件
@@ -261,19 +274,29 @@ wonmanObj.eat();
   - `listeners` 作为 一部分传递到 `$attrs`，可以删除
 ---
 ### computed的特点？
+> 基于依赖的数据会进行缓存结果，减少计算次数。 而watch一般会应用于异步数据变化响应。
+---
 ### vue 如何检测数组变化的
 > vue重写了数组的 `push、pop、shift、unshift、splice、sort、reverse`的方法，在数组内容发生改变时，除了调用数组原始方法外，额外调用了`ob.dep.notify()`方法通知订阅者。
+---
 ### 为何vue采用异步渲染
 > vue是组件及更新的，如果不采用异步渲染，每次数据更新都会对当前组件进行重新渲染，所以为了性能考虑，在本轮数据更新完毕后，再去更新视图
+---
 ### watch 中 deep:true 如何实现
 > watch 初始化时会对需要监听的数据初始化成watcher并收集起来，数据更新时会触发对应的watcher。因为数组对象都是弱引用，所以一般要监听数组对象的改动需要增加`deep: true`的配置。如果存在该配置，vue会对当前对象的每一个key进行求值，然后将当前的watcher存入到对应的属性依赖当中去，这样，对象数组反生变化就会通知数据更新。
+---
 ### vue事件绑定原理
+> 通过 `v-on` 或者 `@` 来绑定事件并指定事件执行函数
+---
 ### v-for和v-if 为什么不能一起使用
 > v-for 的优先级高于v-if，放在一起时，其实会有一些不需要的数据被渲染，增加性能损耗。可以先将要处理的数据进行过滤，再渲染。
+---
 ### v-model 实现原理，如何自定义v-model
 > vue在渲染html模板时，遇到v-model时，会在当前节点绑定一个input事件，监听页面输入的值，从而实现同步更新的目的
+---
 ### 组件中的data为什么是一个函数
 > 以函数返回值的形式定义，是为了保证每次复用组件，都能生成一套新的数据，类似于给每个组件创建一个私有数据空间，不会相互影响。
+---
 ### vue 组件通信
 - `props $emit`
 - eventBus
@@ -281,19 +304,80 @@ wonmanObj.eat();
 - `$attrs $listener`
 - `provied inject`
 - `$parent $children ref`
+---
 ### 什么是作用域插槽
-### diff算法的时间复杂度
-### vue模板编译原理
+> 通过`name`属性分为匿名插槽和具名插槽，作用域插槽可以理解为可以在父组件拿到子组件内的数据，子组件可以在`slot`标签上绑定属性值，父组件可以在`slot-scop`属性绑定的对象上拿到子组件传过来的数据
+---
 ### vue常见的性能优化
+1. 绑定的事件和自定义事件及时销毁
+2. 合理使用`kee-alive`进行缓存组件，被缓存起来的组件中如果要销毁部分数据（比如，定时器），要放在`deactivated`方法中完成。
+3. 使用异步组件
+4. 合理使用`v-if` `v-show` `computed` `watch`, `v-for` 要配合`key` 使用，避免和`v-if` 同时使用
+5. 组件复用，抽离`mixin`,提取公用函数
+6. 改成多页面入口
+  - 打包优化
+    - 关闭sourceMap生成
+    - 使用CDN方式加载外部资源
+    - 使用CDN图片（oss图片压缩）
+    - 第三方组件按需引入等等
+---
+### v-for中为什么要使用key
+> vue中的diff算法需要通过tag和key来判断是否是sameNode,减少渲染次数，提升渲染性能
+---
+### vue组件是如何渲染和更新的
+> 解析模板为`render`函数，触发vue响应式，监听data属性的`getter` `setter`,执行`render`函数，生成vnode, patch等
+---
 ### vue 相同的逻辑如何抽离
+- mixin 混入，抽离公共方法数据
+- 组件级复用，通过参数配置动态数据
+---
 ### 为什么要使用异步组件
+- 减少应用首次请求资源体积
+- 提高资源渲染速度
+- 提升页面性能
+---
 ### 对keep-alive的了解
+> 缓存数据不需要reset的组件，有两个生命周期函数`activted` `deactivated`
+---
 ### 实现hash路由和history路由
+> hash 路由核心是页面的 `hashChange` 事件，监听hash变化。
+> history 路由是依赖`history` API `history.pushState` `history.replaceState` 等
+---
 ### vue-router中有哪些导航守卫
+- `router.beforeEach` 导航触发调用
+- `router.beforeResolve` 导航被确认之前，所有组件内守卫和异步组件被解析之后调用
+- `router.afterEach` 导航确认触发之后调用
+- `beforeEnter` 路由独享守卫
+- `beforeRouteEnter` 组件内守卫
+- `beforeRouteUpdate` 组件内守卫
+- `beforeRouteLeave` 组件内守卫
+> 完整的导航解析流程:
+1. 导航被触发。
+2. 在失活的组件里调用 beforeRouteLeave 守卫。
+3. 调用全局的 beforeEach 守卫。
+4. 在重用的组件里调用 beforeRouteUpdate 守卫 (2.2+)。
+5. 在路由配置里调用 beforeEnter。
+6. 解析异步路由组件。
+7. 在被激活的组件里调用 beforeRouteEnter。
+8. 调用全局的 beforeResolve 守卫 (2.5+)。
+9. 导航被确认。
+10. 调用全局的 afterEach 钩子。
+11. 触发 DOM 更新。
+12. 调用 beforeRouteEnter 守卫中传给 next 的回调函数，创建好的组件实例会作为回调函数的参数传入。
+---
 ### action和mutaion的区别
+> Mutaion 是同步函数，Action是异步函数，属于一种约定，为了更好的管理vuex的状态，我们应该遵守
+---
 ### vuex工作原理
+> 侵入每一个vue组件并并注册`$store`属性，而所有`$store`都指向同一个tore实例，这样就实现了数据共享
+---
 ### vue ssr生命周期
+> 只有 `beforeCreate` 和 `created` 会在服务端执行, 其他任何vue的生命周期方法都不会在服务端执行。
+`nuxt` 是 `nuxtServerInit` `route Middleare` `valite` `asyncData` `fetch` `mounted`
+---
 ### 虚拟dom vue和react的区别
+> vue 通过数据劫持能比较精确的知道数据变化，不需要特别优化，性能就比较好. react默认是通过比较引用的方式比较的，如果不做优化，可能会导致大量的VDOM重新渲染
+---
 ### 小程序
 ### swiper
 ### bootstrap
