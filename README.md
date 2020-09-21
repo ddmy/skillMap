@@ -230,7 +230,57 @@ wonmanObj.eat();
 - SQL 注入攻击
 ## 三、HTTP
 ### 页面缓存原理
+#### 缓存位置:
+1. Service Worker
+  > 运行在浏览器背后的独立线程，因为service worker 涉及到拦截请求，所以必须使用HTTPS协议访问以保证安全，可以自由控制缓存哪些文件，匹配方案，并且缓存是持续性的。 使用方式为：先注册service worker，然后监听到install 事件后，就可以缓存需要缓存的内容。
+2. Memory cache
+  > 内存中的缓存,一般主要包含当前页面中已经获取到的样式，脚本，图片等，读取内存缓存高效，但可持续性时间短，缓存容量小，会随着进程释放而释放，
+3. Disk cache
+  > 硬盘缓存，容量大，速度一般，时效性高，能存储更多类型方式的数据，覆盖面最大，可以根据HTTP请求header来判断缓存的内容是否可以直接使用，或者需要重新请求。
+4. Push cache
+  > 推送缓存(http2),当以上缓存都没有命中时，才会可能使用推送缓存，它只在会话（session）中存在，一旦会话结束就会释放，并非严格执行HTTP缓存头中的指令。
+#### 缓存过程
+> 浏览器是根据第一次请求资源时返回的响应头来确定如何处理缓存
+1. 浏览器每次发起请求都会先在浏览器缓存中查找该请求的请求结果以及缓存标识
+2. 浏览器每次拿到请求结果都会将该结果和缓存标识存入浏览器缓存中
+#### 强缓存
+> 不会向服务器发送请求，直接从缓存中读取资源，结果应该是 from dis cache 或者 from memory cache. 强缓存可以通过两种方式实现:
+1. Expires
+  > 缓存过期时间，用来指定资源到期时间。Expires=max-age + 请求时间，与Last-modified结合使用。 修改本地时间可能会导致缓存失效。
+2. Cache-Control
+   - public：所有内容都将被缓存（客户端和代理服务器都可缓存）
+   - private：所有内容只有客户端可以缓存（中间代理不允许缓存）
+   - no-cache：客户端缓存内容，是否使用缓存则需要经过协商缓存来验证决定(可以理解为不缓存响应内容)
+   - max-age：max-age=xxx (xxx is numeric)表示缓存内容将在xxx秒后失效
+   - s-maxage（单位为s)：同max-age作用一样，只在代理服务器中生效（比如CDN缓存）,优先级高于 max-age 和 expries header
+   - max-stale：能容忍的最大过期时间。
+   - min-fresh：能够容忍的最小新鲜度。
+3. Expires和Cache-Control两者对比
+   > Expires 是http1.0的产物，Cache-Control是http1.1的产物，两者同时存在的话，Cache-Control优先级高于Expires, 现阶段同时存在是一种兼容写法。
+#### 协商缓存
+> 协商缓存就是强制缓存失效后，浏览器携带缓存标识向服务器发起请求，由服务器根据缓存标识决定是否使用缓存的过程,协商缓存可以通过设置两种 HTTP Header 实现：Last-Modified 和 ETag 
+  1. 协商缓存生效，返回304和Not Modifie
+  2. 协商缓存失效，返回200和请求结果
+> 首先在精确度上，Etag要优于Last-Modified。
+Last-Modified的时间单位是秒，如果某个文件在1秒内改变了多次，那么他们的Last-Modified其实并没有体现出来修改，但是Etag每次都会改变确保了精度；如果是负载均衡的服务器，各个服务器生成的Last-Modified也有可能不一致。<br>
+第二在性能上，Etag要逊于Last-Modified，毕竟Last-Modified只需要记录时间，而Etag需要服务器通过算法来计算出一个hash值。<br>
+第三在优先级上，服务器校验优先考虑Etag
+#### 缓存机制
+> 强制缓存优先级高于协商缓存
+#### 用户行为对浏览器缓存的影响
+1. 打开网页，地址栏输入地址： 查找 disk cache 中是否有匹配。如有则使用；如没有则发送网络请求。
+2. 普通刷新 (F5)：因为 TAB 并没有关闭，因此 memory cache 是可用的，会被优先使用(如果匹配的话)。其次才是 disk cache。
+3. 强制刷新 (Ctrl + F5)：浏览器不使用缓存，因此发送的请求头部均带有 Cache-control: no-cache(为了兼容，还带了 Pragma: no-cache),服务器直接返回 200 和最新内容。
+---
 ### 跨域解决方案
+1. JSONP
+2. CORS跨域资源共享
+3. 基于HTTP prosy 实现跨域请求
+   > webpack.config.js 配置 `webpack-dev-server` 可以配置 devServer.proxy
+4. 基于postMessage实现跨域
+5. nginx 反向代理
+6. 基于iframe跨域解决方案
+7. webSocket 协议跨域
 ### 输入URL到页面展现的过程
 > performance.timin，缓存相关，网络相关，浏览器相关 https://www.cnblogs.com/yinhaiying/p/11984003.html
 - 输入url
@@ -240,6 +290,9 @@ wonmanObj.eat();
 - HTTP响应数据
 - 浏览器解析并渲染页面
 ### get和post的区别
+> [知乎](https://www.zhihu.com/question/28586791)
+### RESTful API
+> [learavel](https://learnku.com/laravel/t/13740/resetful-api-design-specification)
 ## 四、框架篇
 ### vue 响应式原理
 > vue实例化的时候将`data`方法返回的数据都挂载上`setter`方法，`setter`方法将页面上的属性进行绑定，在页面`DomContented`事件触发后，vue实例调用`mounted`方法，开始获取接口等异步数据，赋值时，触发提前设置好的`setter`方法，引起页面联动，达到响应式的效果。
@@ -545,6 +598,28 @@ box-sizing的使用
 4. 一旦渲染树创建好了，浏览器就可以根据渲染树直接把页面绘制到屏幕上。
 5. 以上四个步骤并不是一次性顺序完成的。如果DOM或者CSSOM被修改，以上过程会被重复执行。实际上，CSS和JavaScript往往会多次修改DOM或者CSSOM。
 ---
+### xhtml和html的区别
+1. XHTML 元素必须被正确地嵌套
+2. XHTML 元素必须被关闭
+3. 标签名必须用小写字母
+4. XHTML 文档必须拥有根元素
+---
+### Doctype的严格模式和混杂模式，如何触发
+> html文档顶部 `docutype` 声明，不存在或者声明XML或者不正确，会以混杂模式运行，是一种向后兼容的解析语法。声明正确的DTD，会触发标准模式。<br><br>
+文档模式目前有四种：<br>
+混杂模式（quirks mode）<br>
+让IE的行为与（包含非标准特性的）IE5相同<br>
+标准模式（standards mode）<br>
+//让IE的行为更接近标准行为<br>
+准标准模式（almost standards mode）<br>
+//这种模式下的浏览器特性有很多都是符合标准的，不标准的地方主要体现在处理图片间隙的时候（在表格中使用图片时问题最明显）<br>
+超级标准模式:<br>
+//IE8引入的一种新的文档模式，超级文档模式可以让IE以其所有版本中最符合标准的方式来解释网页内容。
+---
+### css的选择符？哪些属性可以继承，优先级
+> 选择符：1.id选择 器，2.类名选择器，3.标签选择器，4.相邻选择器，5.伪类选择器，6.父子选择器（ul>li），7.后代选择器（li a）8.通配符 <br><br>
+继承属性：font-size；font-family，color，text-indent 等字体样式<br><br>
+优先级：!important > 内联 > id > 伪类＞class＞标签选择器
 ### content-visibility
 ### 图片格式
 - GIF
