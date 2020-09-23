@@ -552,6 +552,14 @@ webview用来展现UI，appService有来处理业务逻辑、数据及接口调�
 ### 了解过的打包工具
 ### webpack 构建性能优化
 ### 热更新原理
+> HMR的优点在于保存应用状态，提高开发效率. `webpacl-de-server` 启动本地服务，内部实现了 `webpack` `express` `websocket`
+1. 使用express启动本地服务
+2. 服务端和客户端通过websocket实现长连接
+3. webpack监听资源文件变化，发生改动时，重新编译，每次编译都会生成hash值，发生改动的文件. 编译完成后通过socket推送当前改动的hash值。
+4. 客户端的socket监听到hash值过来，会和上一次做对比，一致则走缓存，不一致则通过ajas或jsonp获取最新资源。
+5. 使用内存文件系统去替换有修改的内容，实现局部刷新。<br>
+[参考链接](https://segmentfault.com/a/1190000020310371)
+---
 ### vite
 ### npm优化
 ### soourceMap的了解
