@@ -528,6 +528,7 @@ webview用来展现UI，appService有来处理业务逻辑、数据及接口调�
 6. HASH法
    > 通过hash函数方法计算结果，通过其运算结果来选择
 ### 洋葱模型
+> 洋葱模型是一种中间件控制流程方式。KOA使用的就是洋葱模型.
 ### 中间件
 ### 状态码
 ### nodejs 中 require是如何工作的？
@@ -537,6 +538,20 @@ webview用来展现UI，appService有来处理业务逻辑、数据及接口调�
 ### redis
 ## 六、工程化
 ### rollup.js
+> roullup是一个javascript模块打包器，可以将小块代码编译成复杂的大块代码。他使用的是ES6标准，可以提前体验一些ES6代码的语法。
+---
+### tree-shaking
+> 是一个静态分析代码并编译的过程，比如 rollup 会静态分析代码中的import，并排除掉未使用的代码，在使用commonjs模块时，必须import完整的工具库，而使用es6模块时，可以只导入有用到的方法.
+---
+### commonjs amd cmd es6
+1. AMD
+  > RequireJs推出的概念， 他是一个AMD框架，按照模块加载方法异步加载js文件，通过define()函数定义，第一个参数是一个数组，里面定义一些需要依赖的包，第二个参数是一个回调函数，通过变量来引用模块里面的方法，最后通过return来输出
+2. CMD
+  > SeaJs 推出的概念，同步加载js模块，通过define()定义，没有依赖前置，通过require加载插件，CMD是依赖就近，在什么地方使用到插件就在什么地方require该插件，即用即返，这是一个同步的概念
+3. CommonJs
+  > 通过module.exports定义的，在前端浏览器里面并不支持module.exports,通过node.js后端使用的。Nodejs端是使用CommonJS规范的，前端浏览器一般使用AMD、CMD、ES6等定义模块化开发的.输出方式有2种：默认输出module.export  和带有名字的输出exports.area
+4. ES6
+  > ES6特性，模块化---export/import对模块进行导出导入的.
 ### webpack 打包原理
 > webpack 是一个静态模块打包工具, 打包处理应用程序时，会递归构建一个模块依赖关系图，然后将这些依赖打包成一个或者多个bundle,webpack就像一条生产线，通过各种插件配置，处理好源文件按顺序交给下一个处理程序，webpack运行过程中会广播事件，插件只需要监听他们各自所关心的事件，就能加入到生产线去运作。<br>
 1. entry
