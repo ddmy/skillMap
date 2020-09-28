@@ -294,6 +294,9 @@ Last-Modified的时间单位是秒，如果某个文件在1秒内改变了多次
 ### RESTful API
 > [learavel](https://learnku.com/laravel/t/13740/resetful-api-design-specification)
 ## 四、框架篇
+### MVC和MVVM
+> MVC, M(model) 业务模型，V(view)用户界面, C(controller)控制器. model 和view 是完全隔离的， controller做为二者的中间人负责二者的交互。 好处：耦合性低，重用性高，部署快，生命周期成本低，可维护性高，适用于中大型项目分层开发。问题：不适合小型项目，视图和控制器层过于紧密的链接降低了视图对模型数据的访问。
+> MVVM。model view viewModel。好处是：数据驱动，vm提供数据双向绑定。
 ### vue 响应式原理
 > vue实例化的时候将`data`方法返回的数据都挂载上`setter`方法，`setter`方法将页面上的属性进行绑定，在页面`DomContented`事件触发后，vue实例调用`mounted`方法，开始获取接口等异步数据，赋值时，触发提前设置好的`setter`方法，引起页面联动，达到响应式的效果。
 ---
@@ -532,6 +535,12 @@ webview用来展现UI，appService有来处理业务逻辑、数据及接口调�
 ### 中间件
 ### 状态码
 ### nodejs 中 require是如何工作的？
+> Node模块系统的核心: module.js. 负责加载，编译和缓存每一个应用用过的文件。 他提供了一个所有nodejs模块被加载构建实例时的一个基础功能: `module.exports`，这就是我们能在文件导出数据对象方法的原因。还有一个就是处理模块的加载机制，标准的`require`函数是基于`module.require`的抽象，而后者其实是对`Module._load`的一个简单包装。加载过程：
+1. 在`Module.cache`中检查是否存在缓存
+2. 如果缓存为空，就创建一个实例，保存到缓存
+3. 调用`Module.compile()`
+4. 如果加载和分析文件时有错误，删除缓存
+5. 返回`module.exports`
 ### koa
 ### express
 ### egg
