@@ -541,9 +541,16 @@ webview用来展现UI，appService有来处理业务逻辑、数据及接口调�
 3. 调用`Module.compile()`
 4. 如果加载和分析文件时有错误，删除缓存
 5. 返回`module.exports`
-### koa
-### express
-### egg
+### koa express egg 的区别
+- Express 是使用 Node.js 开发的传统 Web 框架，提供了 web 开发需要的路由、模板引擎、MVC、Cookie、Session 等功能，支持通过中间件拓展，上手简单，功能强大，是目前最流行 Node.js Web 框架
+- Koa 目标和 Express 一致，相比于 Express 有两几个显著变化
+  1. 中间件使用洋葱模型，让中间件代码根据 next 方法分隔有两次执行时机
+  2. 几乎不再内置任何中间件，把控制权和复杂度交给了开发者
+  3. Koa1通过 generator， koa2通过 async/await 语法，让 web 中高频出现的异步调用书写简单
+- egg
+  1. egg.js 是一个生成 web 框架的框架，目标用户是团队的架构师，egg.js 提供了一套约定优先配置的实现，让架构师通过配置轻松定制符合团队约定的 web 框架
+  2. egg.js 底层基于 koa2，中间件机制和 koa 一致，只不过为了实现通过 config 文件配置，需要简单包装
+  3. egg.js 本身已经很强大，个人用户可以直接把 egg.js 当做 web 框架使用，配合 egg.js plugin、中间件生态，大部分 web 开发任务可以轻松支持 
 ### redis
 1. redis 是一个基于内存的高性能的key-value数据库
 2. redis 是单线程的
