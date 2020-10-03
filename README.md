@@ -515,6 +515,28 @@ webview用来展现UI，appService有来处理业务逻辑、数据及接口调�
 ### elementui
 ### vant
 ### axios
+1. 请求拦截器
+```
+axios.interceptors.request.use(function (config) {
+  // 在发送请求之前做些什么，例如加入token
+  .......
+  return config;
+}, function (error) {
+  // 对请求错误做些什么
+  return Promise.reject(error);
+});
+```
+2. 响应拦截器
+```
+axios.interceptors.response.use(function (response) {
+  // 在接收响应做些什么，例如跳转到登录页
+  ......
+  return response;
+}, function (error) {
+  // 对响应错误做点什么
+  return Promise.reject(error);
+});
+```
 ## 五、服务端
 ### 反向代理，负载均衡
 > 反向代理： 反向代理隐藏了真实的服务端，就像拨打10086一样，背后有很多座机为我们提供服务，但你不知道具体是哪一台在提供服务。
