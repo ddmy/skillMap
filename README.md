@@ -290,7 +290,9 @@ Last-Modified的时间单位是秒，如果某个文件在1秒内改变了多次
 - HTTP响应数据
 - 浏览器解析并渲染页面
 ### get和post的区别
-> [知乎](https://www.zhihu.com/question/28586791)
+> [知乎](https://www.zhihu.com/question/28586791)，本质上都是TCP链接，没有什么区别，但是由于HTTP的规定和浏览器/服务器的限制，导致他们在应用过程中体现出一些不同。 GET和POST还有一个重大区别，简单的说：GET产生一个TCP数据包；POST产生两个TCP数据包。对于GET方式的请求，浏览器会把http header和data一并发送出去，服务器响应200（返回数据）； 而对于POST，浏览器先发送header，服务器响应100 continue，浏览器再发送data，服务器响应200 ok（返回数据）。<br><br>
+> get 具有幂等的特性，读取一个资源，可以对请求的数据进行缓存,浏览器预期没有副作用。请求数据相当于在浏览器地址栏请求一样。安全性相对post方式来讲更低<br><br>
+> post请求，浏览器预期是有副作用的，服务端根据用户上传的数据返回处理结果，请求数据会被浏览器编码到http请求的body中，存在两种格式，一种是`application/x-www-form-urlencoded`用来传递简单数据（key value 格式），另一种是 `multipart/form-data` 处理二进制数据。
 ### RESTful API
 > [learavel](https://learnku.com/laravel/t/13740/resetful-api-design-specification)
 ## 四、框架篇
