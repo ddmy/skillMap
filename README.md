@@ -294,7 +294,10 @@ Last-Modified的时间单位是秒，如果某个文件在1秒内改变了多次
 > get 具有幂等的特性，读取一个资源，可以对请求的数据进行缓存,浏览器预期没有副作用。请求数据相当于在浏览器地址栏请求一样。安全性相对post方式来讲更低<br><br>
 > post请求，浏览器预期是有副作用的，服务端根据用户上传的数据返回处理结果，请求数据会被浏览器编码到http请求的body中，存在两种格式，一种是`application/x-www-form-urlencoded`用来传递简单数据（key value 格式），另一种是 `multipart/form-data` 处理二进制数据。
 ### RESTful API
-> [learavel](https://learnku.com/laravel/t/13740/resetful-api-design-specification)
+ 1. 每一个URI代表一种资源
+ 2. 客户端和服务器之间，传递这种资源的某种表现层
+ 3. 客户端通过四个HTTP动词，对服务器端资源进行操作，实现"表现层状态转化"
+ 4. 一般URL中不包含动词
 ## 四、框架篇
 ### `ref` 和 `reactive` 的区别
 > ref 一般是对简单数据进行转换为相应数据, reactive一般是对复杂数据整体转换为相应数据，如果直接结构复杂数据（对象），会使结构出来的数据丢失响应性。可以通过 `toRefs` 来结构对象，使其结果保持响应，其中 `toRef` 可以对对象单个属性进行操作
