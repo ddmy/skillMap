@@ -636,6 +636,12 @@ axios.interceptors.response.use(function (response) {
 ---
 ### 了解过的打包工具
 ### webpack 构建性能优化
+### docker
+> 是一个开源的应用容器，使用go开发。可以将应用及依赖打包到一个轻量的可移植的容器中，然后发布到任何liux中，也可以实现虚拟化。
+> 优点
+> 1. 快速，一致的交付应用
+> 2. 响应式部署和扩展
+> 3. 在同一硬件上运行更多负载
 ### 热更新原理
 > HMR的优点在于保存应用状态，提高开发效率. `webpacl-de-server` 启动本地服务，内部实现了 `webpack` `express` `websocket`
 1. 使用express启动本地服务
