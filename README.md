@@ -61,6 +61,18 @@ let const 声明变量，箭头函数，模板字符串，解构赋值，import 
 > DomContentLoaded 是当前页面DOM结构加载完毕调用的方法，不包括样式表，图片，外部资源等。 onload是在页面所有资源加载渲染完毕时调用
 ---
 ### Promise 有几种状态
+> 三种状态 `pendding` 进行中 `fulfilled` 成功 `rejected` 失败
+### new Object()与Object.create()的区别
+1. 参数区别
+   -  `object.create(proto, [propertiesObject])` 接收两个参数, 第一个参数的对象属性，会集成到返回值的 `__proto__` 中去， 第二个参数可以直接在对象本身配置一些属性，可以配置该属性可枚举，可写，可配置等状态信息。
+2. 创建对象的方式不同
+  - new Object() 通过构造函数来创建对象, 添加的属性是在自身实例下
+  - Object.create() es6创建对象的另一种方式，可以理解为继承一个对象, 添加的属性是在原型下
+3. 创建对象属性的性质不同
+  - Object.create() 用第二个参数来创建非空对象的属性描述符默认是为false的，而构造函数或字面量方法创建的对象属性的描述符默认为true
+4. 创建空对象时不同
+  - 当用构造函数或对象字面量方法创建空对象时，对象时有原型属性的，即有_proto_
+  - 当用Object.create()方法创建空对象时，对象是没有原型属性的
 > pendding fulfilled reject 当进入reject状态时，会进入catch
 ---
 ### 什么是 Reflect
