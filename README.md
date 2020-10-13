@@ -583,6 +583,8 @@ axios.interceptors.response.use(function (response) {
 > 洋葱模型是一种中间件控制流程方式。KOA使用的就是洋葱模型.
 ### 中间件
 ### 状态码
+### node 事件循环机制
+> Node采用的是单线程的处理机制（所有的I/O请求都采用非阻塞的工作方式），至少从Node.js开发者的角度是这样的。 而在底层，Node.js借助libuv来作为抽象封装层， 从而屏蔽不同操作系统的差异，Node可以借助livuv来来实现多线程。Libuv库负责Node API的执行。它将不同的任务分配给不同的线程，形成一个事件循环， 以异步的方式将任务的执行结果返回给V8引擎。
 ### nodejs 中 require是如何工作的？
 > Node模块系统的核心: module.js. 负责加载，编译和缓存每一个应用用过的文件。 他提供了一个所有nodejs模块被加载构建实例时的一个基础功能: `module.exports`，这就是我们能在文件导出数据对象方法的原因。还有一个就是处理模块的加载机制，标准的`require`函数是基于`module.require`的抽象，而后者其实是对`Module._load`的一个简单包装。加载过程：
 1. 在`Module.cache`中检查是否存在缓存
