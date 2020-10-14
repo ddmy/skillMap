@@ -15,6 +15,10 @@ let const 声明变量，箭头函数，模板字符串，解构赋值，import 
 - 不能够作为构造函数使用
 - 不能够作为`Generator`函数使用（yield）
 ---
+### 捕获错误
+1. try catch
+2. onError
+---
 ### set map 的区别
 - set
   - 成员不能重复
