@@ -664,6 +664,15 @@ axios.interceptors.response.use(function (response) {
 ---
 ### 了解过的打包工具
 ### webpack 构建性能优化
+1. 减少打包时间
+   1. 优化lodar转换范围 `exclude` `include`, 增加转换缓存 `cacheDirectory=true`
+   2. 使用 `HappyPack` 开启多线程打包
+   3. 通过 `DllPlugin` 提前将通用的第三方库单独打包
+   4. 通过 `webpack-parallel-uglify-plugin` 启用代码压缩
+2. 减少打包体积
+   1. 将页面分开打包，一个页面一个文件
+   2. `Scope Hoisting` 将通用模块方法抽出打包成一个文件， webpack中开启 `concatenateModules`
+   3. `Tree shaking` 删除未引用的代码
 ### docker
 > 是一个开源的应用容器，使用go开发。可以将应用及依赖打包到一个轻量的可移植的容器中，然后发布到任何liux中，也可以实现虚拟化。
 > 优点
