@@ -898,4 +898,6 @@ const BFS = {
     }
 }
 console.log(BFS.do(document.body.childNodes));
+
+1
 ```
